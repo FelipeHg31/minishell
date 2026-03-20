@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freelist.c                                      :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/06 13:42:34 by juan-her          #+#    #+#             */
-/*   Updated: 2026/01/24 22:45:09 by juan-her         ###   ########.fr       */
+/*   Created: 2026/02/03 00:26:31 by goramos-          #+#    #+#             */
+/*   Updated: 2026/03/18 00:08:13 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../includes/minishell.h"
 
-void	ft_freelist(t_shell **list)
+int	builtin_pwd(t_shell *sh)
 {
-	t_shell	*temp;
-
-	while (*list)
-	{
-		temp = (*list)->next;
-		free(*list);
-		*list = temp;
-	}
+	if (!sh->pwd_data.pwd)
+		return (1);
+	write(1, sh->pwd_data.pwd, ft_strlen(sh->pwd_data.pwd));
+	write(1, "\n", 1);
+	return (0);
 }

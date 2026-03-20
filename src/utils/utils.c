@@ -1,23 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/24 21:48:48 by juan-her          #+#    #+#             */
-/*   Updated: 2026/01/28 00:09:46 by juan-her         ###   ########.fr       */
+/*   Created: 2026/02/04 15:47:46 by goramos-          #+#    #+#             */
+/*   Updated: 2026/02/18 16:33:15 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#  define MINISHELL_H
+#include "../../includes/minishell.h"
 
-#include <readline/readline.h>
-#include <readline/history.h>
-# include "libft.h"
+void	ft_lstadd_token(t_token **lst, t_token *new_node)
+{
+	t_token	*tmp;
 
-void ft_loop(t_shell *mini);
-void ft_init_shell(t_shell *mini, char **ev);
+	if (!*lst || !new_node)
+	{
+		*lst = new_node;
+		return ;
+	}
+	tmp = *lst;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = new_node;
+}
 
-#endif
+void	ft_print_message(int fd, char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return ;
+	while (str[i])
+		write(fd, &str[i++], 1);
+}

@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 20:41:44 by juan-her          #+#    #+#             */
-/*   Updated: 2026/01/27 23:07:52 by juan-her         ###   ########.fr       */
+/*   Created: 2026/02/02 01:15:33 by juan-her          #+#    #+#             */
+/*   Updated: 2026/02/18 16:39:41 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void ft_init_shell(t_shell *mini, char **ev)
+int	ft_isspace(char c)
 {
-    mini = ft_lstnew();
-    mini->env = ev;
-    mini->state = 1;
+	if (c == ' ' || c == '\t')
+		return (1);
+	return (0);
 }

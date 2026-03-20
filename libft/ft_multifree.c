@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop.c                                             :+:      :+:    :+:   */
+/*   ft_multifree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 18:14:16 by juan-her          #+#    #+#             */
-/*   Updated: 2026/01/28 00:08:28 by juan-her         ###   ########.fr       */
+/*   Created: 2026/01/31 16:21:26 by juan-her          #+#    #+#             */
+/*   Updated: 2026/02/18 16:41:36 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void ft_loop(t_shell *mini)
+void	ft_multifree(int n, ...)
 {
-    char *line;
+	void	**ptr;
+	int		i;
+	va_list	ap;
 
-    (void)mini;
-    while (1)
-    {
-        line = readline("minishel> ");
-        if (!line)
-            return ;
-        if (*line)
-        {
-            printf("linea %s", line);
-            add_history(line);
-        }
-    }
+	if (n < 1)
+		return ;
+	i = 0;
+	va_start(ap, n);
+	while (i < n)
+	{
+		ptr = va_arg(ap, void **);
+		if (*ptr)
+			free(*ptr);
+		*ptr = NULL;
+		i++;
+	}
+	va_end(ap);
 }

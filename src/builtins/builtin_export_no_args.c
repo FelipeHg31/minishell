@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   builtin_export_no_args.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/05 03:02:24 by juan-her          #+#    #+#             */
-/*   Updated: 2026/02/18 16:41:06 by juan-her         ###   ########.fr       */
+/*   Created: 2026/02/05 20:22:35 by goramos-          #+#    #+#             */
+/*   Updated: 2026/03/18 16:30:32 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+# include "../../includes/minishell.h"
 
-int	ft_lstsize(t_list *lst)
+void	builtin_export_no_args(t_shell *shell)
 {
+	t_env	**env_array;
+	int		count;
 	int		i;
-	t_list	*size;
 
-	i = 0;
-	size = lst;
-	while (size)
+	count = count_env_vars(shell->env);
+	if (count == 0)
+		return; 
+	env_array = malloc(count * sizeof(t_env *));
+	if (!env_array)
 	{
+		shell->exit_status = 1;
+		return;
+	}	
+	copy_env_to_array(shell->env, env_array);
+	sort_env_array(env_array, count);
+	i = 0;
+	while (i < count)
+	{
+		print_export_var(env_array[i]);
 		i++;
-		size = size->next;
 	}
-	return (i);
+	free(env_array);
 }

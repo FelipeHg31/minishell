@@ -6,7 +6,7 @@
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 20:56:37 by juan-her          #+#    #+#             */
-/*   Updated: 2026/01/27 23:18:17 by juan-her         ###   ########.fr       */
+/*   Updated: 2026/03/18 00:14:52 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,14 @@
 # include <string.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <stddef.h>
 # include <limits.h>
 
-typedef struct	s_redi
+typedef struct s_list
 {
-	char	file;
-	int		type; 
-}	t_redi;
-
-typedef struct	s_shell
-{
-	char			**args;
-	char			**env;
-	struct t_redi	*redirs;
-	int				state;
-	int				here_doc;
-	struct s_shell	*next;
-}	t_shell;
+	void			*content;
+	struct s_list	*next;
+}	t_list;
 
 size_t	ft_strlen(const char *s);
 long	ft_atoi(const char *str);
@@ -71,12 +62,16 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-t_shell	*ft_lstnew(void);
-int		ft_lstsize(t_shell *lst);
-t_shell	*ft_lstlast(t_shell *lst);
-void	ft_lstadd(t_shell **lst, t_shell *new);
-void	ft_lstdelone(t_shell *lst);
-void	ft_lstclear(t_shell **lst);
-void	ft_lstiter(t_shell *lst, void (*f)(int));
-void	ft_freelist(t_shell **list);
+int		ft_lstsize(t_list *lst);
+t_list	*ft_lstnew(void *content);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstadd(t_list **lst, t_list *new);
+void	ft_lstdelone(t_list *lst, void (*del)(void *));
+void	ft_lstclear(t_list **lst, void (*del)(void *));
+void	ft_lstiter(t_list *lst, void (*f)(void *));
+void	ft_freelist(t_list **list);
+int		ft_isspace(char c);
+void	ft_multifree(int n, ...);
+int		ft_strcmp(const char *s1, const char *s2);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 18:14:16 by juan-her          #+#    #+#             */
-/*   Updated: 2026/03/18 16:52:49 by juan-her         ###   ########.fr       */
+/*   Updated: 2026/03/31 02:34:52 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,34 +28,36 @@ static void	ft_handler_line(char *line, t_shell **mini)
 	}
 }
 
-
-
-void ft_loop(t_shell *mini)
+static void	ft_exit_shell(t_shell *mini, char *line)
 {
-	char *line;
+	if (line)
+		free(line);
+	printf("exit\n");
+	rl_clear_history();
+	exit(mini->exit_status);
+}
+
+static int	ft_is_exit_cmd(char *line)
+{
+	if (!ft_strncmp(line, "exit", 4) && line[4] == '\0')
+		return (1);
+	return (0);
+}
+
+void	ft_loop(t_shell *mini)
+{
+	char	*line;
 
 	while (1)
 	{
-		WHO_SIG = 0;
+		g_who_sig = 0;
 		line = readline("Minishell> ");
 		if (!line)
-		{
-			printf("exit\n");
-			rl_clear_history();
-			exit(mini->exit_status);
-		}
-		if (WHO_SIG)
-		{
-			mini->exit_status = 130;
-			WHO_SIG = 0;
-		}
-		if (!ft_strncmp(line, "exit", 4) && line[4] == '\0')
-		{
-			free(line);
-			printf("exit\n");
-			rl_clear_history();
-			exit(mini->exit_status);
-		}
+			ft_exit_shell(mini, NULL);
+		if (g_who_sig)
+			g_who_sig = 0;
+		if (ft_is_exit_cmd(line))
+			ft_exit_shell(mini, line);
 		if (*line)
 		{
 			add_history(line);

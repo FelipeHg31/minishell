@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: goramos- <goramos-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 19:10:30 by juan-her          #+#    #+#             */
-/*   Updated: 2026/02/28 22:24:01 by juan-her         ###   ########.fr       */
+/*   Updated: 2026/03/27 11:21:14 by goramos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,21 @@ void	ft_execute(char **cmd, char **env)
 {
 	char	*path;
 
+	if (!cmd || !*cmd)
+		exit(127);
 	path = ft_find_path(cmd[0], env);
 	if (!path)
 	{
-		ft_print_error_exec(3, "path");
+		ft_print_error_exec(0, cmd[0]);
 		exit(127);
 	}
 	execve(path, cmd, env);
+	if (errno == EISDIR)
+		ft_print_error_exec(3, cmd[0]);
+	else if (errno == EACCES)
+		ft_print_error_exec(1, cmd[0]);
+	else
+		ft_print_error_exec(2, cmd[0]);
 	free(path);
 	exit(127);
 }

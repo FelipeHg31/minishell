@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    hola.txt                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/24 22:53:20 by juan-her          #+#    #+#              #
-#    Updated: 2026/03/31 04:49:54 by juan-her         ###   ########.fr        #
+#    Updated: 2026/03/30 05:05:43 by juan-her         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ ERROR_SRCS = error_handling.c \
 # Archivos fuente - Lexer
 LEXER_SRCS = check_str.c \
 				check_str2.c \
-				word_util.c \
 				handle_word.c \
 				lexer.c
 
@@ -115,3 +114,5 @@ fclean: clean
 
 re: fclean all
 .PHONY: all clean fclean re
+
+valgrind --leak-check=full --track-fds=yes --gen-suppressions=all --trace-children=yes ./minishel

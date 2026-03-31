@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: goramos- <goramos-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 19:05:51 by juan-her          #+#    #+#             */
-/*   Updated: 2026/03/17 21:39:06 by juan-her         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:52:23 by goramos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	ft_handle_operator(t_token **list, const char *line, int i)
 	return (i + 1);
 }
 
-static void	ft_init_lexer(t_lexer *lexer, int last_status)
+static void	ft_init_lexer(t_lexer *lexer, int last_status, t_shell **mini)
 {
 	lexer->i = 0;
 	lexer->in_s = 0;
@@ -41,29 +41,47 @@ static void	ft_init_lexer(t_lexer *lexer, int last_status)
 	lexer->start = 0;
 	lexer->list = NULL;
 	lexer->last_status = last_status;
+	lexer->env = (*mini)->env;
+}
+
+static void	ft_process_token(const char *line, t_lexer *lx)
+{
+	if (!lx->in_s && ft_is_operator(line[lx->i]))
+	{
+		if (line[lx->i] == '<' && line[lx->i + 1] == '<')
+			lx->after_heredoc = 1;
+		lx->i = ft_handle_operator(&(lx->list), line, lx->i);
+	}
+	else
+	{
+		ft_handle_word(line, lx);
+		lx->after_heredoc = 0;
+	}
+}
+
+static void	ft_lex_loop(const char *line, t_lexer *lx)
+{
+	while (line[lx->i])
+	{
+		while (ft_isspace(line[lx->i]))
+			lx->i++;
+		if (!line[lx->i])
+			break ;
+		lx->start = lx->i;
+		ft_process_token(line, lx);
+	}
 }
 
 t_token	*ft_lexer(const char *line, int last_status, t_shell **mini)
 {
 	t_lexer	lx;
 
-	ft_init_lexer(&lx, last_status);
+	ft_init_lexer(&lx, last_status, mini);
 	if (!ft_check_str(line))
 	{
 		(*mini)->exit_status = 127;
 		return (NULL);
 	}
-	while (line[lx.i])
-	{
-		while (ft_isspace(line[lx.i]))
-			lx.i++;
-		if (!line[lx.i])
-			break ;
-		lx.start = lx.i;
-		if (!lx.in_s && ft_is_operator(line[lx.i]))
-			lx.i = ft_handle_operator(&(lx.list), line, lx.i);
-		else
-			ft_handle_word(line, &lx);
-	}
+	ft_lex_loop(line, &lx);
 	return (lx.list);
 }

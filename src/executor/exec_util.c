@@ -6,7 +6,7 @@
 /*   By: juan-her <juan-her@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:35:39 by goramos-          #+#    #+#             */
-/*   Updated: 2026/03/31 02:14:39 by juan-her         ###   ########.fr       */
+/*   Updated: 2026/04/01 18:02:08 by juan-her         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,8 @@ int	ft_exec_builtin_solo(t_cmd *cmd, t_shell **mini, int prev_pipe)
 	dup2(stdout_backup, STDOUT_FILENO);
 	close(stdin_backup);
 	close(stdout_backup);
+	ft_close_cmd_fds(cmd);
+	ft_check_exit_statuc(mini);
+	ft_init_sig_father();
 	return (1);
 }
